@@ -2,9 +2,8 @@ const request = require('supertest');
 const { rm, mkdir } = require('fs/promises');
 const app = require('../lib/app.js');
 const SimpleDB = require('../lib/simple-db.js');
-const SimpleDb = require('../lib/simple-db.js');
 
-const rootDir = '../store';
+const rootDir = `${__dirname}/../store/shows/`;
 
 describe('shows CRUD API', () => {
   beforeEach(() => {
