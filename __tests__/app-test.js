@@ -2,6 +2,7 @@ const request = require('supertest');
 const { rm, mkdir } = require('fs/promises');
 const app = require('../lib/app.js');
 const SimpleDB = require('../lib/simple-db.js');
+const SimpleDb = require('../lib/simple-db.js');
 
 const rootDir = '../store';
 
@@ -45,6 +46,17 @@ describe('shows CRUD API', () => {
       .send(update);
 
     expect(res.body).toEqual({ ...update, id: expect.any(String) });
+  });
+
+  it('deletes a show via DELETE', async () => {
+    const show = { name: 'his dark materials', genre: 'fantasy drama' };
+    const db = new SimpleDB(rootDir);
+    await db.save(show);
+      
+    await request(app).delete(`/shows/${show.id}`);
+    const res = await request(app).get(`/shows/${show.id}`);
+    
+    expect(res.body).toBeNull();
   });
 
 });
